@@ -1,0 +1,92 @@
+#:import win kivy.core.window
+
+
+<Picture>:
+    on_size: self.center = win.Window.center
+    size: image.size
+    size_hint: None, None
+
+    Image:
+        id: image
+        source: root.source
+        # create initial image to be 400 pixels width
+        size: self.parent.size
+        canvas.before:
+            PushMatrix
+            Rotate:
+                angle: root.angle
+                origin: self.center
+        canvas.after:
+            PopMatrix
+
+<Tachometer>:
+    bg_img: bg_img
+
+    canvas.before:
+        PushMatrix
+        Color:
+            rgb: 1,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    canvas.after:
+        PopMatrix
+
+    AsyncImage:
+        id: bg_img
+        source: "img/m_back.png"
+        size: root.size
+
+# 時間
+    Label:
+        z_index: 11
+        color: 1,1,1,1
+        font_size: 30
+        center_x: 100
+        top: root.height
+        text: self.parent.time
+
+# 回転数
+    Label:
+        z_index: 10
+        color: 0,0,0,1
+        font_size: 100
+        center_x: root.width - 340
+        top: 220
+        text: str(self.parent.cpu)
+
+    Label:
+        color: 0,0,0,1
+        font_size: 25
+        top: 150
+        center_x: root.width - 300
+        text: "km/h"
+
+# 気温
+    Label:
+        color: 1,1,1,1
+        font_size: 25
+        top: root.height - 80
+        center_x: 120
+        text: str(self.parent.temperature)+" ℃"
+
+    Label:
+        color: 0,0,0,1
+        font_size: 35
+        top: root.height - 280
+        center_x: 250
+        text: str(self.parent.trip)+" km"
+
+    Label:
+        color: 0,0,0,1
+        font_size: 35
+        top: root.height - 370
+        center_x: 250
+        text: str(self.parent.trip_cons)+" L"
+
+    Label:
+        color: 0,0,0,1
+        font_size: 35
+        top: root.height - 460
+        center_x: 250
+        text: str(self.parent.voltage)+" V"
